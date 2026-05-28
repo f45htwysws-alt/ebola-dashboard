@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ebola – WHO-Style Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Chart.js MUSS zuerst kommen -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" type="application/javascript"></script>
+
+  <!-- Matrix-Plugin (UMD-Version, wichtig!) -->
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-matrix@2.0.1/dist/chartjs-chart-matrix.umd.min.js?v=9999" type="application/javascript"></script>
+</head>
+
+<body>
+  <header class="header">
+    <div>
+      <h1>Ebola-Situation – Guinea, Sierra Leone, Liberia</h1>
+      <p class="subtitle">Synthetic WHO-style Dashboard – Szenario B (cluster-driven waves)</p>
+    </div>
+    <div class="meta-box">
+      <div><strong>Quelle:</strong> Synthetic reconstruction based on WHO/Africa CDC outbreak patterns</div>
+      <div><strong>Stand:</strong> <span id="metaGenerated">–</span></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Top KPIs -->
+    <section class="kpi-row">
+      <div class="kpi-card kpi-cases">
+        <div class="kpi-label">Gesamtfälle</div>
+        <div class="kpi-value" id="kpiTotalCases">–</div>
+      </div>
+      <div class="kpi-card kpi-deaths">
+        <div class="kpi-label">Gesamt-Todesfälle</div>
+        <div class="kpi-value" id="kpiTotalDeaths">–</div>
+      </div>
+      <div class="kpi-card kpi-hosp">
+        <div class="kpi-label">Aktuell hospitalisiert</div>
+        <div class="kpi-value" id="kpiCurrentHosp">–</div>
+      </div>
+      <div class="kpi-card kpi-rt">
+        <div class="kpi-label">R(t) – letzte 3 Tage (Ø)</div>
+        <div class="kpi-value" id="kpiRt">–</div>
+      </div>
+    </section>
+
+    <!-- Steuerung -->
+    <section class="controls">
+      <div>
+        <label for="countrySelect"><strong>Land auswählen:</strong></label>
+        <select id="countrySelect"></select>
+      </div>
+      <div>
+        <label for="metricSelect"><strong>Metrik:</strong></label>
+        <select id="metricSelect">
+          <option value="cases">Fälle</option>
+          <option value="deaths">Todesfälle</option>
+          <option value="hospitalized">Hospitalisiert</option>
+          <option value="recovered">Genesen</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Zeitreihen -->
+    <section class="grid-2">
+      <div class="card">
+        <h2>Zeitverlauf – <span id="mainChartTitle">Fälle</span></h2>
+        <canvas id="timeSeriesChart" height="200"></canvas>
+      </div>
+      <div class="card">
+        <h2>R(t) – Reproduktionszahl</h2>
+        <canvas id="rtChart" height="200"></canvas>
+      </div>
+    </section>
+
+    <!-- Heatmaps -->
+    <section class="grid-2">
+      <div class="card">
+        <h2>Heatmap – Fälle pro Tag und Land</h2>
+        <canvas id="heatmapCases" height="260"></canvas>
+      </div>
+      <div class="card">
+        <h2>Heatmap – Altersverteilung (kumuliert)</h2>
+        <canvas id="heatmapAge" height="260"></canvas>
+      </div>
+    </section>
+
+    <!-- Tabelle -->
+    <section class="card">
+      <h2>Übersicht – letzte 7 Tage pro Land</h2>
+      <table id="summaryTable">
+        <thead>
+          <tr>
+            <th>Land</th>
+            <th>Fälle (7 Tage)</th>
+            <th>Todesfälle (7 Tage)</th>
+            <th>Hospitalisiert (letzter Tag)</th>
+            <th>R(t) (letzter Tag)</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>WHO-style Layout (synthetisch) – lokal mit <code>python3 -m http.server</code> betreiben.</small>
+  </footer>
+
+  <!-- Dein Dashboard-Code -->
+  <script src="ebola_dashboard.js" type="application/javascript"></script>
+
+</body>
+</html>
+
